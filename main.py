@@ -134,17 +134,17 @@ def profile_access(profile_frame):
 
   profile_mycreations_frame = t.Frame(profile_frame, background="#324C40")
   
-  profile_mycreations_button = t.Button(profile_mycreations_frame, background="#9EAD84", text="+", width=6, height=4, font = ('Comic sans MS', 45), fg="#38573F", activebackground="#38573F", activeforeground="#9EAD84", command=go_configuration_page)
+  profile_mycreations_button = t.Button(profile_mycreations_frame, background="#9EAD84", text="+", width=7, height=4, font = ('Comic sans MS', 45), fg="#38573F", activebackground="#38573F", activeforeground="#9EAD84", command=go_configuration_page)
 
 
   profile_mycreations_list_frame = t.Frame(profile_mycreations_frame, background='red')
 
   profile_mycreations_list_frame1 = t.Frame(profile_mycreations_list_frame, background='#D1D5C6', borderwidth=3)
-  profile_mycreations_list_project1 = t.Label(profile_mycreations_list_frame1 ,text='Test 1', background='#324C40', font = ('Corbel', 15, 'bold'), fg='#D1D5C6')
+  profile_mycreations_list_project1 = t.Label(profile_mycreations_list_frame1 ,text='Test 1', background='#3D5B3A', font = ('Corbel', 15, 'bold'), fg='#D1D5C6')
   profile_mycreations_list_view1 = t.Button(profile_mycreations_list_frame1, font = ('Corbel', 15, 'bold'), text="Voir l'oeuvre", background='#D1D5C6', relief='groove')
   
   profile_mycreations_list_frame2 = t.Frame(profile_mycreations_list_frame, background='#D1D5C6', borderwidth=3)
-  profile_mycreations_list_project2 = t.Label(profile_mycreations_list_frame2 ,text='Test 2', background='#324C40', font = ('Corbel', 15, 'bold'), fg='#D1D5C6')
+  profile_mycreations_list_project2 = t.Label(profile_mycreations_list_frame2 ,text='Test 2', background='#3D5B3A', font = ('Corbel', 15, 'bold'), fg='#D1D5C6')
   profile_mycreations_list_view2 = t.Button(profile_mycreations_list_frame2, font = ('Corbel', 15, 'bold'), text="Voir l'oeuvre", background='#D1D5C6', relief='groove')
 
   creation_frames = [profile_mycreations_list_frame1, profile_mycreations_list_frame2]
@@ -172,12 +172,12 @@ def profile_access(profile_frame):
 
 
 
-  profile_mycreations_list_frame.pack(side='right', fill='x', expand=True)
+  profile_mycreations_list_frame.pack(side='right', expand=True, fill='both')
   
   for frame in creation_frames:
-    frame.pack(fill='x', padx=20, pady=10)
+    frame.pack(padx=20, pady=10)
   for project in creation_frames_projects:
-    project.pack(fill='x',ipady=20, side='left')
+    project.pack(fill='both',ipady=20, ipadx=650, side='left')
   for button in creation_frames_buttons:
     button.pack(side='right', padx=10)
 
