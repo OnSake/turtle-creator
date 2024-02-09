@@ -6,8 +6,8 @@ from Screens.configuration_page import configuration_page
 
 fenetre = t.Tk() #Créer une fenetre
 fenetre.title("Turtle Art Creator")
-fenetre.geometry("1200x1000")
-fenetre.minsize(1200, 1000)
+fenetre.attributes('-fullscreen', True)
+fenetre.bind('<Escape>',lambda e: fenetre.destroy())
 
 
 
@@ -133,12 +133,16 @@ def profile_access(profile_frame):
   profile_creation_title = t.Label(profile_creation_frame, text='Mes créations :', fg = '#577D54', font = font, background='#324C40')
 
   profile_mycreations_frame = t.Frame(profile_frame, background="#324C40")
-  profile_mycreations_button = t.Button(profile_mycreations_frame, background="#9EAD84", text="+", width=5, height=4, font = ('Comic sans MS', 45), fg="#38573F", activebackground="#38573F", activeforeground="#9EAD84", command=go_configuration_page)
+  
+  profile_mycreations_button = t.Button(profile_mycreations_frame, background="#9EAD84", text="+", width=6, height=4, font = ('Comic sans MS', 45), fg="#38573F", activebackground="#38573F", activeforeground="#9EAD84", command=go_configuration_page)
 
-  profile_mycreations_list_frame = t.Frame(profile_mycreations_frame, background='#324C40')
+
+  profile_mycreations_list_frame = t.Frame(profile_mycreations_frame, background='red')
+
   profile_mycreations_list_frame1 = t.Frame(profile_mycreations_list_frame, background='#D1D5C6', borderwidth=3)
   profile_mycreations_list_project1 = t.Label(profile_mycreations_list_frame1 ,text='Test 1', background='#324C40', font = ('Corbel', 15, 'bold'), fg='#D1D5C6')
   profile_mycreations_list_view1 = t.Button(profile_mycreations_list_frame1, font = ('Corbel', 15, 'bold'), text="Voir l'oeuvre", background='#D1D5C6', relief='groove')
+  
   profile_mycreations_list_frame2 = t.Frame(profile_mycreations_list_frame, background='#D1D5C6', borderwidth=3)
   profile_mycreations_list_project2 = t.Label(profile_mycreations_list_frame2 ,text='Test 2', background='#324C40', font = ('Corbel', 15, 'bold'), fg='#D1D5C6')
   profile_mycreations_list_view2 = t.Button(profile_mycreations_list_frame2, font = ('Corbel', 15, 'bold'), text="Voir l'oeuvre", background='#D1D5C6', relief='groove')
@@ -168,12 +172,12 @@ def profile_access(profile_frame):
 
 
 
-  profile_mycreations_list_frame.pack(side='right',fill='both')
+  profile_mycreations_list_frame.pack(side='right', fill='x', expand=True)
   
   for frame in creation_frames:
-    frame.pack(fill='both', padx=20, pady=10)
+    frame.pack(fill='x', padx=20, pady=10)
   for project in creation_frames_projects:
-    project.pack(fill='both',ipadx=350,ipady=20, side='left')
+    project.pack(fill='x',ipady=20, side='left')
   for button in creation_frames_buttons:
     button.pack(side='right', padx=10)
 
