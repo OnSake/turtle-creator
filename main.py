@@ -2,7 +2,7 @@ import tkinter as t
 from tkinter import font
 from tkinter.filedialog import askopenfilename 
 from PIL import Image, ImageTk
-
+from Screens.configuration_page import configuration_page
 
 fenetre = t.Tk() #Créer une fenetre
 fenetre.title("Turtle Art Creator")
@@ -17,13 +17,13 @@ fenetre.minsize(1200, 1000)
 home_frame =t.Frame(fenetre, background='#324C40')
 profile_frame = t.Frame(fenetre, background='#324C40')
 login_frame = t.Frame(fenetre, background='#324C40')
-
+configuration_frame = t.Frame(fenetre, background='#324C40')
 
 font = ('Corbel', 30, 'bold')
 
 
 
-pages = [home_frame, profile_frame, login_frame]
+pages = [home_frame, profile_frame, login_frame, configuration_frame]
 
 
 # --------------- LOGIN PAGE --------------- #
@@ -133,7 +133,7 @@ def profile_access(profile_frame):
   profile_creation_title = t.Label(profile_creation_frame, text='Mes créations :', fg = '#577D54', font = font, background='#324C40')
 
   profile_mycreations_frame = t.Frame(profile_frame, background="#324C40")
-  profile_mycreations_button = t.Button(profile_mycreations_frame, background="#9EAD84", text="+", width=5, height=4, font = ('Comic sans MS', 45), fg="#38573F", activebackground="#38573F", activeforeground="#9EAD84")
+  profile_mycreations_button = t.Button(profile_mycreations_frame, background="#9EAD84", text="+", width=5, height=4, font = ('Comic sans MS', 45), fg="#38573F", activebackground="#38573F", activeforeground="#9EAD84", command=go_configuration_page)
 
   profile_mycreations_list_frame = t.Frame(profile_mycreations_frame, background='#324C40')
   profile_mycreations_list_frame1 = t.Frame(profile_mycreations_list_frame, background='#D1D5C6', borderwidth=3)
@@ -202,6 +202,11 @@ def go_login_page():
   login_access()
   login_frame.pack(fill='both', ipady=100)
 
+def go_configuration_page():
+  for p in pages:
+      p.pack_forget()
+  configuration_page(configuration_frame)
+  
 
 login_access(login_frame)
 login_frame.pack(fill='both', ipady=100)
