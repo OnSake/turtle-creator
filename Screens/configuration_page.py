@@ -1,15 +1,22 @@
 import tkinter as t
 import turtle
+from datetime import datetime
+from PIL import Image, ImageGrab 
 
-# fenetre = t.Tk() #Créer une fenetre
-# fenetre.title("Turtle Art Creator")
-# fenetre.attributes('-fullscreen', True)
-# fenetre.bind('<Escape>',lambda e: fenetre.destroy())
-# configuration_frame = t.Frame(fenetre, background='#324C40')
+fenetre = t.Tk() #Créer une fenetre
+fenetre.title("Turtle Art Creator")
+fenetre.attributes('-fullscreen', True)
+fenetre.bind('<Escape>',lambda e: fenetre.destroy())
+configuration_frame = t.Frame(fenetre, background='#324C40')
 
 def configuration_page(configuration_frame):
 
   font = ('Corbel', 30, 'bold')
+  forme_text = "Veuillez entrer le nom de la forme que vous voulez réaliser parmi celles proposées : carré, triangle, étoile"
+  place_text = "Veuillez entrer le nom de l'endroit où vous voulez réaliser votre forme parmi celles proposées : HG, H, HD, G, C, D, BG, B, BD"
+  surface_text = "Veuillez entrer le nombre de lignes et de colonne pour la figure choisie"
+  error_text = t.StringVar(fenetre)
+
 
   def verify_entry():
     forme_entry = forme_input.get() 
@@ -17,25 +24,39 @@ def configuration_page(configuration_frame):
     surface_entry = [surface_input.get(), surface_input1.get()]
     if forme_entry in ["carré", "triangle", "étoile"] :
       if place_entry in ["HG", "H", "HD", "G", "C", "D", "BG", "B", "BD"]:
-        if type(surface_entry[0]) == int and type(surface_entry[1]) == int:
+        print(type(surface_entry[0]), type(surface_entry[1]))
+        if type(surface_entry[0]) == str and type(surface_entry[1]) == str: #à corriger
           forme_error.pack_forget()
+          depla(350, 0)
         else:
-          pass
+          error_text.set("Veuillez indiquer uniquement des données sous le format int()")
+        forme_error.pack()
       else :
-        pass
+        error_text.set("Veuillez sélectionner une position proposée")
+        forme_error.pack()
     else:
+      error_text.set("Veuillez sélectionner une des figures proposée")
       forme_error.pack()
+
+  def reset_turtle():
+    tu.reset()
+
+  def save_turtle():
+    date = (datetime.now()).strftime("%d%b%Y-%H%M%S") 
+    fileName = 'turtle' + date
+    width = turtle_canvas.winfo_width()
+    height = turtle_canvas.winfo_height()
+    img = ImageGrab.grab((500, 0, width, height))
+    img.save(fileName + '.png', format='PNG') 
 
 
   def depla(x, y):
-    tu.up()
+    #tu.up()
     tu.goto(x, y)
-    tu.down()
+    #tu.down()
 
 
-  forme_text = "Veuillez entrer le nom de la forme que vous voulez réaliser parmi celles proposées : carré, triangle, étoile"
-  place_text = "Veuillez entrer le nom de l'endroit où vous voulez réaliser votre forme parmi celles proposées : HG, H, HD, G, C, D, BG, B, BD"
-  surface_text = "Veuillez entrer le nombre de lignes et de colonne pour la figure choisie"
+
   # --------- Title --------- #
   configuration_title_frame = t.Frame(configuration_frame, background='#D1D5C6', borderwidth=5)
   configuration_title = t.Label(configuration_title_frame, text = "Créer votre oeuvre", background = '#324C40', font = font, fg="#D1D5C6")
@@ -63,13 +84,13 @@ def configuration_page(configuration_frame):
   surface_input = t.Entry(surface_input_frame, font=('Corbel', 15, 'bold'), fg='#D1D5C6', background='#577D54', justify='center')
   surface_input1 = t.Entry(surface_input_frame, font=('Corbel', 15, 'bold'), fg='#D1D5C6', background='#577D54', justify='center')
 
-  forme_error = t.Label(button_frame, bg="#D1D5C6", fg='red', text="Veuillez sélectionner une des options proposées", font = ('Corbel', 13, 'bold'))
+  forme_error = t.Label(button_frame, bg="#D1D5C6", fg='red', textvariable=error_text , font = ('Corbel', 13, 'bold'))
   draw_button = t.Button(button_frame, background='#577D54', text="Dessiner", font=('Corbel', 14, 'bold'), fg="#D1D5C6", command=verify_entry)
 
   # ------ Save Frame ------ #
   save_frame = t.Frame(configuration_turtle_button, background='#3D5B3A')
-  save_button = t.Button(save_frame, text='Enregistrer', bg='#577D54', fg='#D1D5C6', font=('Corbel', 20, 'bold'))
-  reset_button = t.Button(save_frame, text='Réinitialiser', bg='#577D54', fg='#D1D5C6', font=('Corbel', 20, 'bold'))
+  save_button = t.Button(save_frame, text='Enregistrer', bg='#577D54', fg='#D1D5C6', font=('Corbel', 20, 'bold'), command=save_turtle)
+  reset_button = t.Button(save_frame, text='Réinitialiser', bg='#577D54', fg='#D1D5C6', font=('Corbel', 20, 'bold'), command=reset_turtle)
 
 
   # --------- Turtle Frame --------- #
@@ -120,5 +141,5 @@ def configuration_page(configuration_frame):
 
 #Enregistrer Turtle en Image https://python-forum.io/thread-25822.html
   
-# configuration_page(configuration_frame)
-# t.mainloop()
+configuration_page(configuration_frame)
+t.mainloop()

@@ -172,7 +172,7 @@ def profile_access(profile_frame):
 
 
 
-  profile_mycreations_list_frame.pack(side='right', expand=True, fill='both')
+  profile_mycreations_list_frame.pack(side='right', expand=True, fill='x')
   
   for frame in creation_frames:
     frame.pack(padx=20, pady=10)
