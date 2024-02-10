@@ -24,13 +24,12 @@ def configuration_page(configuration_frame):
     surface_entry = [surface_input.get(), surface_input1.get()]
     if forme_entry in ["carré", "triangle", "étoile"] :
       if place_entry in ["HG", "H", "HD", "G", "C", "D", "BG", "B", "BD"]:
-        print(type(surface_entry[0]), type(surface_entry[1]))
-        if type(surface_entry[0]) == str and type(surface_entry[1]) == str: #à corriger
-          forme_error.pack_forget()
-          depla(350, 0)
-        else:
-          error_text.set("Veuillez indiquer uniquement des données sous le format int()")
-        forme_error.pack()
+          if surface_entry[0].isdigit() and surface_entry[1].isdigit():
+            forme_error.pack_forget()
+            depla(350, 0)
+          else:
+            error_text.set("Veuillez indiquer uniquement des données sous le format int()")
+            forme_error.pack()
       else :
         error_text.set("Veuillez sélectionner une position proposée")
         forme_error.pack()
@@ -44,16 +43,16 @@ def configuration_page(configuration_frame):
   def save_turtle():
     date = (datetime.now()).strftime("%d%b%Y-%H%M%S") 
     fileName = 'turtle' + date
-    width = turtle_canvas.winfo_width()
-    height = turtle_canvas.winfo_height()
-    img = ImageGrab.grab((500, 0, width, height))
+
+    # Capture de toute la fenêtre
+    img = ImageGrab.grab(bbox=(975, 225, 1900, 1030))
     img.save(fileName + '.png', format='PNG') 
 
 
   def depla(x, y):
-    #tu.up()
+    tu.up()
     tu.goto(x, y)
-    #tu.down()
+    tu.down()
 
 
 
@@ -130,12 +129,14 @@ def configuration_page(configuration_frame):
   reset_button.pack(ipadx=20, ipady=10, side='right', expand=True)
   
   
-  turtle_canvas.pack(side='right', padx=20)
+  turtle_canvas.pack(side='right', padx=20, fill='x')
 
 
 
 
   tu = turtle.RawPen(screen)
+  tu.hideturtle()
+  tu.speed(0)
   depla(0, 0)
   configuration_frame.pack(fill='both')
 
