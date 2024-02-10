@@ -16,7 +16,7 @@ def configuration_page(configuration_frame):
   place_text = "Veuillez entrer le nom de l'endroit où vous voulez réaliser votre forme parmi celles proposées : HG, H, HD, G, C, D, BG, B, BD"
   surface_text = "Veuillez entrer le nombre de lignes et de colonne pour la figure choisie"
   error_text = t.StringVar(fenetre)
-
+  image_path = 'Oeuvres/'
 
   def verify_entry():
     forme_entry = forme_input.get() 
@@ -46,7 +46,7 @@ def configuration_page(configuration_frame):
 
     # Capture de toute la fenêtre
     img = ImageGrab.grab(bbox=(975, 225, 1900, 1030))
-    img.save(fileName + '.png', format='PNG') 
+    img.save(image_path+ fileName + '.png', format='PNG') 
 
 
   def depla(x, y):
