@@ -2,6 +2,7 @@ import tkinter as t
 from tkinter import font
 from tkinter.filedialog import askopenfilename 
 from PIL import Image, ImageTk
+
 from Screens.configuration_page import configuration_page
 
 fenetre = t.Tk() #Créer une fenetre
@@ -10,17 +11,13 @@ fenetre.attributes('-fullscreen', True)
 fenetre.bind('<Escape>',lambda e: fenetre.destroy())
 
 
-
 # --------------- PAGES --------------- #
-
-
 home_frame =t.Frame(fenetre, background='#324C40')
 profile_frame = t.Frame(fenetre, background='#324C40')
 login_frame = t.Frame(fenetre, background='#324C40')
 configuration_frame = t.Frame(fenetre, background='#324C40')
 
 font = ('Corbel', 30, 'bold')
-
 
 
 pages = [home_frame, profile_frame, login_frame, configuration_frame]
@@ -32,13 +29,10 @@ def login_access(login_frame):
       if username_input.get() != '':
         global user_name
         user_name = username_input.get()
-        username_error_frame.pack_forget()
         username_error_message.pack_forget()
         go_home_page()
       else: 
         error_message.set(value="Veuillez entrer un nom d'utilisateur valide")
-        print(error_message.get())
-        username_error_frame.pack(expand=True)
         username_error_message.pack(expand=True)
 
     def choose_img():
@@ -58,27 +52,29 @@ def login_access(login_frame):
     username_frame = t.Frame(login_frame, background='#324C40')
     username_input = t.Entry(username_frame, font=('Corbel', 15, 'bold'), fg='#D1D5C6', background='#577D54')
     username_error_frame = t.Frame(login_frame, background='red')
-    error_message = t.StringVar(master=username_error_frame, value="EEEE")
-    username_error_message = t.Label(username_error_frame, text=error_message, fg='red', background='#324C40', font=('Corbel', 15, 'bold'))
+    error_message = t.StringVar(fenetre)
+    username_error_message = t.Label(username_error_frame, textvariable=error_message, fg='red', background='#324C40', font=('Corbel', 15, 'bold'))
 
 
     profil_img_frame = t.Frame(login_frame, background='#324C40')
-    profil_img_choose = t.Button(profil_img_frame, text='Choisir une photo de profil',  command=choose_img)
-    im1 = Image.open('background.png')
+    profil_img_choose = t.Button(profil_img_frame, text='Choisir une photo de profil', bg='#577D54', fg='#D1D5C6', font=('Corbel', 15, 'bold'),  command=choose_img)
+    im1 = Image.open('Icons/background.png')
     tkimage = ImageTk.PhotoImage(im1)
     profil_img = t.Label(profil_img_frame, image=tkimage, background='#324C40')
     profil_img.image = tkimage
 
-    button_confirm = t.Button(login_frame, text='Confirmer', font= ('Corbel', 15), command=confirm_username)
+    button_confirm = t.Button(login_frame, text='Confirmer', font= ('Corbel', 15, 'bold'), bg='#577D54', fg='#D1D5C6', command=confirm_username)
     frame = t.Frame(login_frame, background='#324C40')
 
+
+    # --------- Pack --------- #
     welcome_message.pack(fill='x', expand=True, pady=30)
     presentation_message.pack(fill='x', expand=True, pady= 50)
 
     username_frame.pack(expand=True, ipady=20)
     username_input.pack(ipadx=20, ipady=15, side='left', padx=20)
     username_error_frame.pack(expand=True)
-    username_error_message.pack(expand=True)
+
 
     profil_img_frame.pack()
     profil_img_choose.pack()
@@ -182,8 +178,6 @@ def profile_access(profile_frame):
     button.pack(side='right', padx=10)
 
   
-
-    
 # --------------- PAGE ACCESS FUNCTION --------------- #
 
 def go_profile_page():

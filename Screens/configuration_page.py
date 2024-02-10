@@ -1,13 +1,13 @@
 import tkinter as t
 import turtle
 from datetime import datetime
-from PIL import Image, ImageGrab 
+from PIL import ImageGrab 
 
-fenetre = t.Tk() #Créer une fenetre
-fenetre.title("Turtle Art Creator")
-fenetre.attributes('-fullscreen', True)
-fenetre.bind('<Escape>',lambda e: fenetre.destroy())
-configuration_frame = t.Frame(fenetre, background='#324C40')
+# fenetre = t.Tk() #Créer une fenetre
+# fenetre.title("Turtle Art Creator")
+# fenetre.attributes('-fullscreen', True)
+# fenetre.bind('<Escape>',lambda e: fenetre.destroy())
+# configuration_frame = t.Frame(fenetre, background='#324C40')
 
 def configuration_page(configuration_frame):
 
@@ -15,7 +15,7 @@ def configuration_page(configuration_frame):
   forme_text = "Veuillez entrer le nom de la forme que vous voulez réaliser parmi celles proposées : carré, triangle, étoile"
   place_text = "Veuillez entrer le nom de l'endroit où vous voulez réaliser votre forme parmi celles proposées : HG, H, HD, G, C, D, BG, B, BD"
   surface_text = "Veuillez entrer le nombre de lignes et de colonne pour la figure choisie"
-  error_text = t.StringVar(fenetre)
+  error_text = t.StringVar(configuration_frame)
   image_path = 'Oeuvres/'
 
   def verify_entry():
@@ -26,7 +26,7 @@ def configuration_page(configuration_frame):
       if place_entry in ["HG", "H", "HD", "G", "C", "D", "BG", "B", "BD"]:
           if surface_entry[0].isdigit() and surface_entry[1].isdigit():
             forme_error.pack_forget()
-            depla(350, 0)
+            position_turtle(place_entry)
           else:
             error_text.set("Veuillez indiquer uniquement des données sous le format int()")
             forme_error.pack()
@@ -54,7 +54,26 @@ def configuration_page(configuration_frame):
     tu.goto(x, y)
     tu.down()
 
-
+  def position_turtle(pos):
+    if pos in ["HG", "H", "HD"]:
+      depla(0, 350)
+      if pos == 'HG':
+        depla(-400, 350)
+      elif pos == 'HD':
+        depla(400, 350)
+    elif pos in ["BG", "B", "BD"]: 
+      depla(0, -350)
+      if pos == 'BG':
+        depla(-400, -350)
+      elif pos == 'BD':
+        depla(400, -350)
+    else:
+      if pos == 'G':
+        depla(-400, 0)
+      elif pos == 'D':
+        depla(400, 0)
+      else:
+        depla(0, 0)
 
   # --------- Title --------- #
   configuration_title_frame = t.Frame(configuration_frame, background='#D1D5C6', borderwidth=5)
@@ -135,12 +154,10 @@ def configuration_page(configuration_frame):
 
 
   tu = turtle.RawPen(screen)
-  tu.hideturtle()
+  #tu.hideturtle()
   tu.speed(0)
   depla(0, 0)
   configuration_frame.pack(fill='both')
 
 #Enregistrer Turtle en Image https://python-forum.io/thread-25822.html
   
-configuration_page(configuration_frame)
-t.mainloop()
