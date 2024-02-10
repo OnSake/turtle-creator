@@ -17,6 +17,8 @@ def configuration_page(configuration_frame, username):
   forme_text = "Veuillez entrer le nom de la forme que vous voulez réaliser parmi celles proposées : carré, spirale, flocon, sierpinsky, geo, cercle"
   place_text = "Veuillez entrer le nom de l'endroit où vous voulez réaliser votre forme parmi celles proposées : HG, H, HD, G, C, D, BG, B, BD"
   surface_text = "Veuillez entrer le nombre de lignes et de colonne pour la figure choisie"
+  couleur_text = "Veuillez entre une couleur"
+  
   error_text = t.StringVar(configuration_frame)
   image_path = 'Oeuvres/'
 
@@ -24,11 +26,18 @@ def configuration_page(configuration_frame, username):
     forme_entry = forme_input.get() 
     place_entry = place_input.get()
     surface_entry = [surface_input.get(), surface_input1.get()]
+    color_entry = couleur_input.get()
+    
+    if check.get() == 0:
+      fill_entry = False
+    else:
+      fill_entry = True
+
     if forme_entry in ["carré", "spirale", "flocon", "sierpinsky", "geo", "cercle"] :
       if place_entry in ["HG", "H", "HD", "G", "C", "D", "BG", "B", "BD"]:
           if surface_entry[0].isdigit() and surface_entry[1].isdigit():
             forme_error.pack_forget()
-            position_turtle(place_entry, forme_entry, surface_entry)
+            position_turtle(place_entry, forme_entry, surface_entry, color_entry, fill_entry)
           else:
             error_text.set("Veuillez indiquer uniquement des données sous le format int()")
             forme_error.pack()
@@ -57,7 +66,8 @@ def configuration_page(configuration_frame, username):
     tu.goto(x, y)
     tu.down()
 
-  def position_turtle(pos, forme, surface):
+  def position_turtle(pos, forme, surface, couleur, rempli):
+    print(couleur)
     tu.speed(0)
     if pos in ["HG", "H", "HD"]:
       depla(0, 350)
@@ -78,7 +88,7 @@ def configuration_page(configuration_frame, username):
         depla(400, 0)
       else:
         depla(0, 0)
-    Surface(tu, (tu.xcor(), tu.ycor()), 50, forme, 'rainbow', int(surface[0]), int(surface[1]))
+    Surface(tu, (tu.xcor(), tu.ycor()), 50, forme, 'rainbow', int(surface[0]), int(surface[1]), Couleur=couleur, Rempli=rempli)
 
   
 
@@ -102,12 +112,22 @@ def configuration_page(configuration_frame, username):
   place_label = t.Label(place_frame, text=place_text, background='#D1D5C6', font = ('Corbel', 13, 'bold'), fg="#324C40", justify='left')
   place_input = t.Entry(place_frame, font=('Corbel', 15, 'bold'), fg='#D1D5C6', background='#577D54', justify='center')
 
-
   surface_frame = t.Frame(button_frame, background='#D1D5C6')
   surface_label = t.Label(surface_frame, text=surface_text, background='#D1D5C6', font = ('Corbel', 13, 'bold'), fg="#324C40", justify='left')
   surface_input_frame = t.Frame(surface_frame, background='#D1D5C6')
   surface_input = t.Entry(surface_input_frame, font=('Corbel', 15, 'bold'), fg='#D1D5C6', background='#577D54', justify='center')
   surface_input1 = t.Entry(surface_input_frame, font=('Corbel', 15, 'bold'), fg='#D1D5C6', background='#577D54', justify='center')
+
+  couleur_setting_frame = t.Frame(button_frame, background='#D1D5C6')
+  couleur_frame = t.Frame(couleur_setting_frame, background='#D1D5C6')
+  couleur_label = t.Label(couleur_frame, text=couleur_text, background='#D1D5C6', font = ('Corbel', 13, 'bold'), fg="#324C40", justify='left')
+  couleur_input = t.Entry(couleur_frame, font=('Corbel', 15, 'bold'), fg='#D1D5C6', background='#577D54', justify='center')
+  
+  check_frame = t.Frame(couleur_setting_frame, background='#D1D5C6')
+  couleur__check_label = t.Label(check_frame, text="Votre forme est pleine", background='#D1D5C6', font = ('Corbel', 13, 'bold'), fg="#324C40", justify='left')
+  check = t.IntVar()
+  check.set(0)
+  couleur_check = t.Checkbutton(check_frame, bg='#D1D5C6', onvalue=1, offvalue=0, variable=check)
 
   forme_error = t.Label(button_frame, bg="#D1D5C6", fg='red', textvariable=error_text , font = ('Corbel', 13, 'bold'))
   draw_button = t.Button(button_frame, background='#577D54', text="Dessiner", font=('Corbel', 14, 'bold'), fg="#D1D5C6", command=verify_entry)
@@ -147,6 +167,16 @@ def configuration_page(configuration_frame, username):
   surface_input_frame.pack(expand=True)
   surface_input.pack(side='left', ipadx=20, ipady=5, padx=20, pady=2)
   surface_input1.pack(side='right', ipadx=20, ipady=5, padx=20, pady=2)
+
+  couleur_setting_frame.pack( fill='x')
+
+  couleur_frame.pack(side='left', expand=True, padx=10)
+  couleur_label.pack(pady= 20)
+  couleur_input.pack(ipadx=20, ipady=5, padx=20, pady=2)
+
+  check_frame.pack(side='right', expand=True, padx=10, ipadx=20)
+  couleur__check_label.pack(pady= 20)
+  couleur_check.pack(ipadx=20, ipady=5, padx=20, pady=2)
 
   draw_button.pack(ipadx=15, ipady=5, pady=20)
 
