@@ -38,7 +38,7 @@ def login_access(login_frame):
     def choose_img():
       path = askopenfilename(title="Choississez votre photo de profil", filetypes=[('png files','.png'), ('jpg files', '.jpg')])
       im = Image.open(path)
-      im = im.resize((200, 200))
+      im = im.resize((150, 150))
       tkimage = ImageTk.PhotoImage(im)
       profile_img = t.Label(profil_img_frame, image=tkimage, background='#324C40')
       profile_img.image = tkimage
@@ -59,6 +59,7 @@ def login_access(login_frame):
     profil_img_frame = t.Frame(login_frame, background='#324C40')
     profil_img_choose = t.Button(profil_img_frame, text='Choisir une photo de profil', bg='#577D54', fg='#D1D5C6', font=('Corbel', 15, 'bold'),  command=choose_img)
     im1 = Image.open('Icons/background.png')
+    global tkimage
     tkimage = ImageTk.PhotoImage(im1)
     profil_img = t.Label(profil_img_frame, image=tkimage, background='#324C40')
     profil_img.image = tkimage
@@ -119,8 +120,8 @@ def profile_access(profile_frame):
 
   # --------- Username + Img --------- #
   profile_header_frame = t.Frame(profile_frame, background='#324C40')
-  profil_img = t.PhotoImage(file='Icons/logo.png')
-  profile_header_img = t.Label(profile_header_frame, image=profil_img, width=150, height=150, background='#324C40')
+  profile_header_img = t.Label(profile_header_frame, image=tkimage, width=150, height=150, background='#324C40')
+  profile_header_img.image = tkimage
   profile_header_name = t.Label(profile_header_frame, text=user_name, background='#324C40', fg = '#D1D5C6', font = font)
 
 
@@ -133,7 +134,7 @@ def profile_access(profile_frame):
   profile_mycreations_button = t.Button(profile_mycreations_frame, background="#9EAD84", text="+", width=7, height=4, font = ('Comic sans MS', 45), fg="#38573F", activebackground="#38573F", activeforeground="#9EAD84", command=go_configuration_page)
 
 
-  profile_mycreations_list_frame = t.Frame(profile_mycreations_frame, background='red')
+  profile_mycreations_list_frame = t.Frame(profile_mycreations_frame, background='#324C40')
 
   profile_mycreations_list_frame1 = t.Frame(profile_mycreations_list_frame, background='#D1D5C6', borderwidth=3)
   profile_mycreations_list_project1 = t.Label(profile_mycreations_list_frame1 ,text='Test 1', background='#3D5B3A', font = ('Corbel', 15, 'bold'), fg='#D1D5C6')
@@ -170,13 +171,14 @@ def profile_access(profile_frame):
 
   profile_mycreations_list_frame.pack(side='right', expand=True, fill='x')
   
-  for frame in creation_frames:
-    frame.pack(padx=20, pady=10)
+  for frame_crea in creation_frames:
+    frame_crea.pack(padx=20, pady=10)
   for project in creation_frames_projects:
     project.pack(fill='both',ipady=20, ipadx=650, side='left')
   for button in creation_frames_buttons:
     button.pack(side='right', padx=10)
 
+  frame.pack(ipady=150)
   
 # --------------- PAGE ACCESS FUNCTION --------------- #
 
