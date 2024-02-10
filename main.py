@@ -205,7 +205,7 @@ def go_login_page():
 def go_configuration_page():
   for p in pages:
       p.pack_forget()
-  configuration_page(configuration_frame)
+  configuration_page(configuration_frame, user_name)
   
 
 login_access(login_frame)

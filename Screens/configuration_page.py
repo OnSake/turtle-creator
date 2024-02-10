@@ -3,16 +3,18 @@ import turtle
 from datetime import datetime
 from PIL import ImageGrab 
 
+from Screens.save_in_bdd import save
+from Screens.forme import Surface
 # fenetre = t.Tk() #Créer une fenetre
 # fenetre.title("Turtle Art Creator")
 # fenetre.attributes('-fullscreen', True)
 # fenetre.bind('<Escape>',lambda e: fenetre.destroy())
 # configuration_frame = t.Frame(fenetre, background='#324C40')
 
-def configuration_page(configuration_frame):
+def configuration_page(configuration_frame, username):
 
   font = ('Corbel', 30, 'bold')
-  forme_text = "Veuillez entrer le nom de la forme que vous voulez réaliser parmi celles proposées : carré, triangle, étoile"
+  forme_text = "Veuillez entrer le nom de la forme que vous voulez réaliser parmi celles proposées : carré, spirale, flocon, sierpinsky, geo, cercle"
   place_text = "Veuillez entrer le nom de l'endroit où vous voulez réaliser votre forme parmi celles proposées : HG, H, HD, G, C, D, BG, B, BD"
   surface_text = "Veuillez entrer le nombre de lignes et de colonne pour la figure choisie"
   error_text = t.StringVar(configuration_frame)
@@ -22,11 +24,11 @@ def configuration_page(configuration_frame):
     forme_entry = forme_input.get() 
     place_entry = place_input.get()
     surface_entry = [surface_input.get(), surface_input1.get()]
-    if forme_entry in ["carré", "triangle", "étoile"] :
+    if forme_entry in ["carré", "spirale", "flocon", "sierpinsky", "geo", "cercle"] :
       if place_entry in ["HG", "H", "HD", "G", "C", "D", "BG", "B", "BD"]:
           if surface_entry[0].isdigit() and surface_entry[1].isdigit():
             forme_error.pack_forget()
-            position_turtle(place_entry)
+            position_turtle(place_entry, forme_entry, surface_entry)
           else:
             error_text.set("Veuillez indiquer uniquement des données sous le format int()")
             forme_error.pack()
@@ -39,22 +41,24 @@ def configuration_page(configuration_frame):
 
   def reset_turtle():
     tu.reset()
+    tu.hideturtle()
 
   def save_turtle():
     date = (datetime.now()).strftime("%d%b%Y-%H%M%S") 
     fileName = 'turtle' + date
-
     # Capture de toute la fenêtre
     img = ImageGrab.grab(bbox=(975, 225, 1900, 1030))
     img.save(image_path+ fileName + '.png', format='PNG') 
 
+    save(username, fileName)
 
   def depla(x, y):
     tu.up()
     tu.goto(x, y)
     tu.down()
 
-  def position_turtle(pos):
+  def position_turtle(pos, forme, surface):
+    tu.speed(0)
     if pos in ["HG", "H", "HD"]:
       depla(0, 350)
       if pos == 'HG':
@@ -74,6 +78,9 @@ def configuration_page(configuration_frame):
         depla(400, 0)
       else:
         depla(0, 0)
+    Surface(tu, (tu.xcor(), tu.ycor()), 50, forme, 'rainbow', int(surface[0]), int(surface[1]))
+
+  
 
   # --------- Title --------- #
   configuration_title_frame = t.Frame(configuration_frame, background='#D1D5C6', borderwidth=5)
@@ -154,10 +161,9 @@ def configuration_page(configuration_frame):
 
 
   tu = turtle.RawPen(screen)
-  #tu.hideturtle()
+  tu.hideturtle()
   tu.speed(0)
   depla(0, 0)
   configuration_frame.pack(fill='both')
 
-#Enregistrer Turtle en Image https://python-forum.io/thread-25822.html
   
