@@ -64,7 +64,7 @@ def somme_geo(t, n,longueur) :
     t.forward(longueur//2)
     t.left(90)
     if n > 0 :
-        somme_geo(n-1,longueur//2)
+        somme_geo(t, n-1,longueur//2)
 
 
 def flocon (t, Cote,Rempli=False) :
@@ -125,7 +125,6 @@ def cercle (t, Rayon,Rempli=False) :
 
 
 def Surface (t, Coordonnees,Cote,Forme,Couleur,Ligne,Colonne,Angle=0,Rempli=False,Forme_Spirale = 0,Taille_Sierpinsky_Geo=0,Ecart_cercle=0) :
-
     initialisation(t, Coordonnees)
     for i in range (Ligne) :
         for j in range (Colonne) :

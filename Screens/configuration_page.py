@@ -5,6 +5,7 @@ from PIL import ImageGrab
 
 from Screens.save_in_bdd import save
 from Screens.forme import Surface
+
 # fenetre = t.Tk() #Créer une fenetre
 # fenetre.title("Turtle Art Creator")
 # fenetre.attributes('-fullscreen', True)
@@ -41,7 +42,7 @@ def configuration_page(configuration_frame, username):
               if nb_cote_entry.isdigit() or nb_cote_entry == '':
                 forme_error.pack_forget()
                 if nb_cote_entry == '':
-                  position_turtle(place_entry, forme_entry, surface_entry, color_entry, fill_entry, int(longueur_entry), 0)
+                  position_turtle(place_entry, forme_entry, surface_entry, color_entry, fill_entry, int(longueur_entry), 1)
                 else:
                   position_turtle(place_entry, forme_entry, surface_entry, color_entry, fill_entry, int(longueur_entry), int(nb_cote_entry))
               else:
@@ -79,7 +80,6 @@ def configuration_page(configuration_frame, username):
     tu.down()
 
   def position_turtle(pos, forme, surface, couleur, rempli, longueur, nb_cote_spirale):
-    print(couleur)
     tu.speed(0)
     if pos in ["HG", "H", "HD"]:
       depla(0, 300)
@@ -95,13 +95,13 @@ def configuration_page(configuration_frame, username):
         depla(400, -300)
     else:
       if pos == 'G':
-        depla(-400, 0)
+        depla(-350, 0)
       elif pos == 'D':
-        depla(400, 0)
+        depla(350, 0)
       else:
         depla(0, 0)
     
-    Surface(t=tu, Coordonnees=(tu.xcor(), tu.ycor()), Cote=longueur, Forme=forme, Ligne=int(surface[0]), Colonne=int(surface[1]), Couleur=couleur, Rempli=rempli, Forme_Spirale=nb_cote_spirale)
+    Surface(t=tu, Coordonnees=(tu.xcor(), tu.ycor()), Cote=longueur, Forme=forme, Ligne=int(surface[0]), Colonne=int(surface[1]), Couleur=couleur, Rempli=rempli, Forme_Spirale=nb_cote_spirale, Taille_Sierpinsky_Geo=nb_cote_spirale)
 
   
 
