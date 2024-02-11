@@ -8,3 +8,7 @@ def save(username, filename):
   curseur.execute(f'INSERT INTO Turtle_oeuvre (username, nom_oeuvre, user_id) VALUES ("{username}", "{filename}"')
   connexion.commit()
   connexion.close() #pour arreter
+
+
+def delete_item():
+  pass
