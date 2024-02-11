@@ -129,12 +129,12 @@ def Surface (t, Coordonnees,Cote,Forme,Couleur,Ligne,Colonne,Angle=0,Rempli=Fals
     initialisation(t, Coordonnees)
     for i in range (Ligne) :
         for j in range (Colonne) :
-            initialisation(t, (Coordonnees[0]+j*Cote,Coordonnees[1]-i*Cote))
+            initialisation(t, (int(Coordonnees[0])+j*Cote,int(Coordonnees[1])-i*Cote))
             #----------------Couleur------------------------
             if Couleur == "rainbow" :
                 random_couleur_turtle(t)#Couleur aléatoire par la fonction
             else :
-                t.color("black")#Couleur choisie
+                t.color(Couleur)#Couleur choisie
                 t.fillcolor(Couleur)
             #----------------------------------------
             #----------------Formes------------------------
@@ -158,7 +158,7 @@ def Surface (t, Coordonnees,Cote,Forme,Couleur,Ligne,Colonne,Angle=0,Rempli=Fals
 #Sierpinsky(4,200)
 #spirale_rec(300,3)
 
-#Surface((-500,0),100,"flocon","rainbow",5,8,45,True,0,3,100)
+#Surface(turtle, (-500,0),100,"spirale","rainbow",5,8,45,True,5,3,100)
 """On va voir ##################
 def Stalagmite (Taille,Rond=False) :
     #On met une valeur mediane pour les angles des stalagmites : randint(60,120)
@@ -169,3 +169,5 @@ def Stalagmite (Taille,Rond=False) :
     t.forward(Taille)
 """
 #Stalagmite(100,False)
+
+#turtle.exitonclick()
