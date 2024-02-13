@@ -37,6 +37,7 @@ def spirale_rec(t, longueur,cote) :
     t.forward(longueur)
     t.left(360/cote)
 
+
 def koch(t, step,L) :
     if step == 0 :
         t.forward(L)

@@ -6,7 +6,7 @@ import turtle
 from datetime import datetime
 
 
-from bdd_fonction import delete_item, save
+from bdd_fonction import delete_item, save, oeuvre_community, connexion_close
 from forme import Surface
 
 fenetre = t.Tk() #Créer une fenetre
@@ -197,7 +197,43 @@ def community_access(frame):
   global back_image, avant_img, apres_img, delete_img, tkimage #Pour PhotoImage
   font = ('Corbel', 30, 'bold')
   username = t.StringVar()
-  username.set("Username")
+  index_liste = 0
+  liste_oeuvre = oeuvre_community(user_name)
+  username.set(liste_oeuvre[index_liste][0])
+  nom_oeuvre = liste_oeuvre[index_liste][1]
+
+  def oeuvre_avant(liste, username, nom_oeuvre): 
+      nonlocal index_liste
+      if index_liste > 0:
+        index_liste -= 1
+      else:
+        index_liste = len(liste)-1
+      
+      username.set(liste[index_liste][0])
+      nom_oeuvre = liste[index_liste][1]
+      im = Image.open(f'./Oeuvres/{nom_oeuvre}.png')
+      im_resized = im.resize((905, 805))
+      tkimg = ImageTk.PhotoImage(im_resized)
+      community_username_label.pack(side='right')
+      community_img.create_image(0, 0, anchor=t.NW, image=tkimg)
+      community_img.image = tkimg
+
+  def oeuvre_apres(liste, username, nom_oeuvre): 
+      if index_liste < len(liste)-1:
+        index_liste += 1
+      else:
+        index_liste = 0
+
+      print(index_liste)
+      username.set(liste[index_liste][0])
+      nom_oeuvre = liste[index_liste][1]
+      im = Image.open(f'./Oeuvres/{nom_oeuvre}.png')
+      im_resized = im.resize((905, 805))
+      tkimg = ImageTk.PhotoImage(im_resized)
+      community_username_label.pack(side='right')
+      community_img.create_image(0, 0, anchor=t.NW, image=tkimg)
+      community_img.image = tkimg
+      
 
   # --------- TOP FRAME --------- #
   top_frame = t.Frame(frame, background='#324C40')
@@ -217,19 +253,19 @@ def community_access(frame):
   # ------ Button Frame ------ #
   community_button_frame = t.Frame(community_art_frame, background='#324C40')
 
+
   community_left_frame = t.Frame(community_button_frame, background='#324C40')
   community_left_button = t.Button(community_left_frame, image=avant_img, font=font, fg="#D1D5C6", activebackground="#D1D5C6", activeforeground="#577D54", bg='#577D54')
 
   community_image_frame = t.Frame(community_button_frame, background='#D1D5C6')
-  im1 = Image.open('./Icons/background.png')
+  im1 = Image.open(f'./Oeuvres/{nom_oeuvre}.png')
   im1_resized = im1.resize((905, 805))
   tkimage = ImageTk.PhotoImage(im1_resized)
-  community_img = t.Label(community_image_frame,image=tkimage, background='#324C40')
+  community_img = t.Canvas(community_image_frame, width=905, height=805)
+  community_img.create_image(0, 0, anchor = t.NW, image=tkimage)
 
-  community_img.image = tkimage
 
-  community_right_frame = t.Frame(community_button_frame, background='#324C40')
-  
+  community_right_frame = t.Frame(community_button_frame, background='#324C40')  
   community_right_button = t.Button(community_right_frame, image=apres_img, font=font, fg="#D1D5C6", activebackground="#D1D5C6", activeforeground="#577D54", bg='#577D54')
 
 
@@ -238,8 +274,8 @@ def community_access(frame):
   delete_username_frame = t.Frame(community_delete_frame, background='#324C40')
   community_delete_label = t.Label(delete_username_frame, text='Oeuvre réalisée par :', font=font, bg='#324C40', fg="#D1D5C6")
   community_username_label = t.Label(delete_username_frame, textvariable=username, font=font,bg='#324C40', fg="#D1D5C6")
+  delete_button = t.Button(community_delete_frame, image=delete_img, bg='#577D54')
   
-  delete_button = t.Button(community_delete_frame, image=delete_img, bg='#577D54', command=delete_item)
 
   delete_username_frame.pack(side='left', expand=True)
   community_delete_label.pack(side='left')
@@ -280,6 +316,10 @@ def community_access(frame):
   community_delete_frame.pack(side='bottom', ipadx=20, ipady= 100, fill='both', pady=10)
   community_delete_label.pack()
 
+  
+
+  community_left_button['command'] = lambda: oeuvre_avant(liste_oeuvre, username, nom_oeuvre)
+  community_right_button['command'] = lambda: oeuvre_apres(liste_oeuvre, username, nom_oeuvre)
 # --------------- CONFIGURATION PAGE --------------- #
 
 def configuration_page(configuration_frame, username):
@@ -547,3 +587,4 @@ login_frame.pack(fill='both', ipady=100)
 
 
 t.mainloop() #Laisser la fenetre ouverte
+connexion_close()
