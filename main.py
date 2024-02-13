@@ -353,7 +353,7 @@ def configuration_page(configuration_frame, username):
     else:
       fill_entry = True
 
-    if forme_entry in ["carré", "spirale", "flocon", "sierpinsky", "geo", "cercle"] :
+    if forme_entry in ["carré", "spirale", "flocon", "sierpinsky", "geo", "cercle"] : #Tu me rajoutes les formes possibles ici
       if place_entry in ["HG", "H", "HD", "G", "C", "D", "BG", "B", "BD"]:
           if surface_entry[0].isdigit() and surface_entry[1].isdigit():
             if longueur_entry.isdigit():
