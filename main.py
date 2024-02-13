@@ -202,8 +202,8 @@ def community_access(frame):
   username.set(liste_oeuvre[index_liste][0])
   nom_oeuvre = liste_oeuvre[index_liste][1]
 
-  def oeuvre_avant(liste, username, nom_oeuvre): 
-      nonlocal index_liste
+  def oeuvre_avant(liste, username): 
+      nonlocal index_liste, nom_oeuvre
       if index_liste > 0:
         index_liste -= 1
       else:
@@ -218,13 +218,15 @@ def community_access(frame):
       community_img.create_image(0, 0, anchor=t.NW, image=tkimg)
       community_img.image = tkimg
 
-  def oeuvre_apres(liste, username, nom_oeuvre): 
+
+  def oeuvre_apres(liste, username): 
+      nonlocal index_liste, nom_oeuvre
       if index_liste < len(liste)-1:
         index_liste += 1
       else:
         index_liste = 0
 
-      print(index_liste)
+
       username.set(liste[index_liste][0])
       nom_oeuvre = liste[index_liste][1]
       im = Image.open(f'./Oeuvres/{nom_oeuvre}.png')
@@ -233,7 +235,12 @@ def community_access(frame):
       community_username_label.pack(side='right')
       community_img.create_image(0, 0, anchor=t.NW, image=tkimg)
       community_img.image = tkimg
+ 
       
+  def delete_image(filename):
+    delete_item(filename)
+    nonlocal  liste_oeuvre 
+    liste_oeuvre = oeuvre_community(user_name)
 
   # --------- TOP FRAME --------- #
   top_frame = t.Frame(frame, background='#324C40')
@@ -277,10 +284,6 @@ def community_access(frame):
   delete_button = t.Button(community_delete_frame, image=delete_img, bg='#577D54')
   
 
-  delete_username_frame.pack(side='left', expand=True)
-  community_delete_label.pack(side='left')
-  community_username_label.pack(side='right')
-  delete_button.pack(side='right', ipadx=5, ipady=5, expand=True)
   # --------- Pack --------- #
   frame.pack(fill='both')
 
@@ -316,10 +319,15 @@ def community_access(frame):
   community_delete_frame.pack(side='bottom', ipadx=20, ipady= 100, fill='both', pady=10)
   community_delete_label.pack()
 
+  delete_username_frame.pack(side='left', expand=True)
+  community_delete_label.pack(side='left')
+  community_username_label.pack(side='right')
+  delete_button.pack(side='right', ipadx=5, ipady=5, expand=True)
   
 
-  community_left_button['command'] = lambda: oeuvre_avant(liste_oeuvre, username, nom_oeuvre)
-  community_right_button['command'] = lambda: oeuvre_apres(liste_oeuvre, username, nom_oeuvre)
+  community_left_button['command'] = lambda: oeuvre_avant(liste_oeuvre, username)
+  community_right_button['command'] = lambda: oeuvre_apres(liste_oeuvre, username)
+  delete_button['command'] = lambda: delete_image(nom_oeuvre)
 # --------------- CONFIGURATION PAGE --------------- #
 
 def configuration_page(configuration_frame, username):
