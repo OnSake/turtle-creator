@@ -13,6 +13,9 @@ def delete_item(filename):
   connexion.commit()
 
 
+def oeuvre_user(username):
+  curseur.execute(f'SELECT username, nom_oeuvre FROM Turtle_oeuvre WHERE username = ?', (username,))
+  return curseur.fetchall()
 
 def oeuvre_community(username):
   curseur.execute(f'SELECT username, nom_oeuvre FROM Turtle_oeuvre WHERE username != ?', (username,))

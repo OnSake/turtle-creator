@@ -6,7 +6,7 @@ import turtle
 from datetime import datetime
 
 
-from bdd_fonction import delete_item, save, oeuvre_community, connexion_close
+from bdd_fonction import delete_item, save, oeuvre_community, connexion_close, oeuvre_user
 from forme import Surface
 
 fenetre = t.Tk() #Créer une fenetre
@@ -21,11 +21,12 @@ profile_frame = t.Frame(fenetre, background='#324C40')
 login_frame = t.Frame(fenetre, background='#324C40')
 configuration_frame = t.Frame(fenetre, background='#324C40')
 community_frame = t.Frame(fenetre, background='#324C40')
+mycreation_frame = t.Frame(fenetre, background='#324C40')
 
 font = ('Corbel', 30, 'bold')
 
 
-pages = [home_frame, profile_frame, login_frame, configuration_frame, community_frame]
+pages = [home_frame, profile_frame, login_frame, configuration_frame, community_frame, mycreation_frame]
 
 back_image = t.PhotoImage(file='./Icons/bouton-retour.png')
 avant_img = t.PhotoImage(file='./Icons/avant.png')
@@ -145,19 +146,13 @@ def profile_access(profile_frame):
   profile_mycreations_button = t.Button(profile_mycreations_frame, background="#9EAD84", text="+", width=7, height=4, font = ('Comic sans MS', 45), fg="#38573F", activebackground="#38573F", activeforeground="#9EAD84", command=go_configuration_page)
 
 
-  profile_mycreations_list_frame = t.Frame(profile_mycreations_frame, background='#324C40')
+  profile_mycreations_list_frame = t.Frame(profile_mycreations_frame, background='#D1D5C6')
 
   profile_mycreations_list_frame1 = t.Frame(profile_mycreations_list_frame, background='#D1D5C6', borderwidth=3)
-  profile_mycreations_list_project1 = t.Label(profile_mycreations_list_frame1 ,text='Test 1', background='#3D5B3A', font = ('Corbel', 15, 'bold'), fg='#D1D5C6')
-  profile_mycreations_list_view1 = t.Button(profile_mycreations_list_frame1, font = ('Corbel', 15, 'bold'), text="Voir l'oeuvre", background='#D1D5C6', relief='groove')
+  profile_mycreations_list_project1 = t.Label(profile_mycreations_list_frame ,text='Visitez vos oeuvres', background='#3D5B3A', font = ('Corbel', 15, 'bold'), fg='#D1D5C6')
+  profile_mycreations_list_view1 = t.Button(profile_mycreations_list_frame, font = ('Corbel', 15, 'bold'), text="Voir l'oeuvre", background='#D1D5C6', relief='groove', command=go_mycreation_page)
   
-  profile_mycreations_list_frame2 = t.Frame(profile_mycreations_list_frame, background='#D1D5C6', borderwidth=3)
-  profile_mycreations_list_project2 = t.Label(profile_mycreations_list_frame2 ,text='Test 2', background='#3D5B3A', font = ('Corbel', 15, 'bold'), fg='#D1D5C6')
-  profile_mycreations_list_view2 = t.Button(profile_mycreations_list_frame2, font = ('Corbel', 15, 'bold'), text="Voir l'oeuvre", background='#D1D5C6', relief='groove')
 
-  creation_frames = [profile_mycreations_list_frame1, profile_mycreations_list_frame2]
-  creation_frames_projects = [profile_mycreations_list_project1, profile_mycreations_list_project2]
-  creation_frames_buttons = [profile_mycreations_list_view1, profile_mycreations_list_view2]
 
   frame = t.Frame(profile_frame, background='#324C40')
 
@@ -182,12 +177,10 @@ def profile_access(profile_frame):
 
   profile_mycreations_list_frame.pack(side='right', expand=True, fill='x')
   
-  for frame_crea in creation_frames:
-    frame_crea.pack(padx=20, pady=10)
-  for project in creation_frames_projects:
-    project.pack(fill='both',ipady=20, ipadx=650, side='left')
-  for button in creation_frames_buttons:
-    button.pack(side='right', padx=10)
+
+  profile_mycreations_list_frame.pack(fill='y', padx=20, pady=10)
+  profile_mycreations_list_project1.pack(ipady=20, side='left', fill='both', ipadx=250, padx=20, pady=10)
+  profile_mycreations_list_view1.pack(side='left', fill='both', ipadx=250, padx=20, pady=10)
 
   frame.pack(ipady=150)
   
@@ -237,10 +230,6 @@ def community_access(frame):
       community_img.image = tkimg
  
       
-  def delete_image(filename):
-    delete_item(filename)
-    nonlocal  liste_oeuvre 
-    liste_oeuvre = oeuvre_community(user_name)
 
   # --------- TOP FRAME --------- #
   top_frame = t.Frame(frame, background='#324C40')
@@ -281,7 +270,7 @@ def community_access(frame):
   delete_username_frame = t.Frame(community_delete_frame, background='#324C40')
   community_delete_label = t.Label(delete_username_frame, text='Oeuvre réalisée par :', font=font, bg='#324C40', fg="#D1D5C6")
   community_username_label = t.Label(delete_username_frame, textvariable=username, font=font,bg='#324C40', fg="#D1D5C6")
-  delete_button = t.Button(community_delete_frame, image=delete_img, bg='#577D54')
+
   
 
   # --------- Pack --------- #
@@ -322,12 +311,10 @@ def community_access(frame):
   delete_username_frame.pack(side='left', expand=True)
   community_delete_label.pack(side='left')
   community_username_label.pack(side='right')
-  delete_button.pack(side='right', ipadx=5, ipady=5, expand=True)
   
 
   community_left_button['command'] = lambda: oeuvre_avant(liste_oeuvre, username)
   community_right_button['command'] = lambda: oeuvre_apres(liste_oeuvre, username)
-  delete_button['command'] = lambda: delete_image(nom_oeuvre)
 # --------------- CONFIGURATION PAGE --------------- #
 
 def configuration_page(configuration_frame, username):
@@ -557,6 +544,146 @@ def configuration_page(configuration_frame, username):
   depla(0, 0)
   configuration_frame.pack(fill='both')
 
+
+# --------------- MYCREATIONS PAGE --------------- #
+
+def mycreation_access(frame, user_name):
+    global back_image, avant_img, apres_img, delete_img, tkimage #Pour PhotoImage
+    font = ('Corbel', 30, 'bold')
+    username = t.StringVar()
+    index_liste = 0
+    liste_oeuvre = oeuvre_user(user_name)
+    username.set(liste_oeuvre[index_liste][0])
+    nom_oeuvre = liste_oeuvre[index_liste][1]
+
+    def oeuvre_avant(liste, username): 
+        nonlocal index_liste, nom_oeuvre
+        if index_liste > 0:
+          index_liste -= 1
+        else:
+          index_liste = len(liste)-1
+        
+        username.set(liste[index_liste][0])
+        nom_oeuvre = liste[index_liste][1]
+        im = Image.open(f'./Oeuvres/{nom_oeuvre}.png')
+        im_resized = im.resize((905, 805))
+        tkimg = ImageTk.PhotoImage(im_resized)
+        mycreation_username_label.pack(side='right')
+        mycreation_img.create_image(0, 0, anchor=t.NW, image=tkimg)
+        mycreation_img.image = tkimg
+
+
+    def oeuvre_apres(liste, username): 
+        nonlocal index_liste, nom_oeuvre
+        if index_liste < len(liste)-1:
+          index_liste += 1
+        else:
+          index_liste = 0
+
+
+        username.set(liste[index_liste][0])
+        nom_oeuvre = liste[index_liste][1]
+        im = Image.open(f'./Oeuvres/{nom_oeuvre}.png')
+        im_resized = im.resize((905, 805))
+        tkimg = ImageTk.PhotoImage(im_resized)
+        mycreation_username_label.pack(side='right')
+        mycreation_img.create_image(0, 0, anchor=t.NW, image=tkimg)
+        mycreation_img.image = tkimg
+  
+        
+    def delete_image(filename):
+      delete_item(filename)
+      nonlocal  liste_oeuvre 
+      liste_oeuvre = oeuvre_user(user_name)
+
+    # --------- TOP FRAME --------- #
+    top_frame = t.Frame(frame, background='#324C40')
+      # ------ Back Button ------ #
+    mycreation_back_frame = t.Frame(top_frame, background='#324C40')
+    mycreation_back_button = t.Button(mycreation_back_frame, background="#577D54", text="<", font = ('Corbel', 25), fg="#D1D5C6", activebackground="#D1D5C6", activeforeground="#577D54", command=go_profile_page, image=back_image, )
+
+
+      # ------ Title ------ #
+    mycreation_title_frame = t.Frame(top_frame, background='#D1D5C6', borderwidth=5)
+    mycreation_title = t.Label(mycreation_title_frame, text = "Les oeuvres de la communauté", background = '#324C40', font = font, fg="#D1D5C6")
+
+
+    # --------- ART FRAME --------- #
+    mycreation_art_frame = t.Frame(frame, background='#324C40')
+
+    # ------ Button Frame ------ #
+    mycreation_button_frame = t.Frame(mycreation_art_frame, background='#324C40')
+
+
+    mycreation_left_frame = t.Frame(mycreation_button_frame, background='#324C40')
+    mycreation_left_button = t.Button(mycreation_left_frame, image=avant_img, font=font, fg="#D1D5C6", activebackground="#D1D5C6", activeforeground="#577D54", bg='#577D54')
+
+    mycreation_image_frame = t.Frame(mycreation_button_frame, background='#D1D5C6')
+    im1 = Image.open(f'./Oeuvres/{nom_oeuvre}.png')
+    im1_resized = im1.resize((905, 805))
+    tkimage = ImageTk.PhotoImage(im1_resized)
+    mycreation_img = t.Canvas(mycreation_image_frame, width=905, height=805)
+    mycreation_img.create_image(0, 0, anchor = t.NW, image=tkimage)
+
+
+    mycreation_right_frame = t.Frame(mycreation_button_frame, background='#324C40')  
+    mycreation_right_button = t.Button(mycreation_right_frame, image=apres_img, font=font, fg="#D1D5C6", activebackground="#D1D5C6", activeforeground="#577D54", bg='#577D54')
+
+
+    # ------ Delete Frame ------ #
+    mycreation_delete_frame = t.Frame(mycreation_art_frame, background='#324C40')
+    delete_username_frame = t.Frame(mycreation_delete_frame, background='#324C40')
+    mycreation_delete_label = t.Label(delete_username_frame, text='Oeuvre réalisée par :', font=font, bg='#324C40', fg="#D1D5C6")
+    mycreation_username_label = t.Label(delete_username_frame, textvariable=username, font=font,bg='#324C40', fg="#D1D5C6")
+    delete_button = t.Button(mycreation_delete_frame, image=delete_img, bg='#577D54')
+    
+
+    # --------- Pack --------- #
+    frame.pack(fill='both')
+
+    # ---- TOP FRAME ----- #
+    top_frame.pack(side='top', fill='x')
+      # ---- Title ----- #
+    mycreation_title_frame.pack(pady=20, expand=True, side='right')
+    mycreation_title.pack(ipadx=10, ipady=5)
+
+      # ---- Back Button ----- #
+    mycreation_back_frame.pack(side='left',padx=20, fill='x')
+    mycreation_back_button.pack(ipadx=5, ipady=5)
+
+    # ---- ART FRAME ----- #
+    mycreation_art_frame.pack(side='bottom', fill='x', pady=20)
+
+      # ---- Button Area ----- #
+    mycreation_button_frame.pack(side='top', fill='x')
+
+        # ---- Left Button Area ----- #
+    mycreation_left_frame.pack(side='left', ipadx=100, padx=50)
+    mycreation_left_button.pack(expand=True, ipadx=20, ipady=25)
+
+        # ---- Image Button Area ----- #
+    mycreation_image_frame.pack(expand=True, side='left', ipadx=10, ipady=10)
+    mycreation_img.pack(expand=True)
+
+        # ---- Right Button Area ----- #
+    mycreation_right_frame.pack(side='right', ipadx=100, padx=50)
+    mycreation_right_button.pack(expand=True, ipadx=20, ipady=25)
+
+      # ---- Delete Area ----- #
+    mycreation_delete_frame.pack(side='bottom', ipadx=20, ipady= 100, fill='both', pady=10)
+    mycreation_delete_label.pack()
+
+    delete_username_frame.pack(side='left', expand=True)
+    mycreation_delete_label.pack(side='left')
+    mycreation_username_label.pack(side='right')
+    delete_button.pack(side='right', ipadx=5, ipady=5, expand=True)
+    
+
+    mycreation_left_button['command'] = lambda: oeuvre_avant(liste_oeuvre, username)
+    mycreation_right_button['command'] = lambda: oeuvre_apres(liste_oeuvre, username)
+    delete_button['command'] = lambda: delete_image(nom_oeuvre)
+
+
 # --------------- PAGE ACCESS FUNCTION --------------- #
 
 def go_profile_page():
@@ -589,6 +716,10 @@ def go_community_page():
       p.pack_forget()
   community_access(community_frame)
 
+def go_mycreation_page():
+  for p in pages:
+      p.pack_forget()
+  mycreation_access(mycreation_frame, user_name)
 
 login_access(login_frame)
 login_frame.pack(fill='both', ipady=100)
