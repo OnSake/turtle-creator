@@ -1,6 +1,6 @@
 import tkinter as t
 from tkinter import font
-from tkinter.filedialog import askopenfilename 
+from tkinter.filedialog import askopenfilename
 from PIL import Image, ImageTk, ImageGrab
 import turtle
 from datetime import datetime
@@ -42,7 +42,7 @@ def login_access(login_frame):
         user_name = username_input.get()
         username_error_message.pack_forget()
         go_home_page()
-      else: 
+      else:
         error_message.set(value="Veuillez entrer un nom d'utilisateur valide")
         username_error_message.pack(expand=True)
 
@@ -119,9 +119,9 @@ def home_access(home_frame):
     frame.pack(pady=50)
 
 # --------------- PROFILE PAGE --------------- #
-        
+
 def profile_access(profile_frame):
-  
+
   profile_back_frame = t.Frame(profile_frame, background='#324C40')
 
   profile_back_button = t.Button(profile_back_frame, background="#577D54", text="<", font = ('Corbel', 25), fg="#D1D5C6", activebackground="#D1D5C6", activeforeground="#577D54", command=go_home_page, image=back_image)
@@ -142,7 +142,7 @@ def profile_access(profile_frame):
   profile_creation_title = t.Label(profile_creation_frame, text='Mes créations :', fg = '#577D54', font = font, background='#324C40')
 
   profile_mycreations_frame = t.Frame(profile_frame, background="#324C40")
-  
+
   profile_mycreations_button = t.Button(profile_mycreations_frame, background="#9EAD84", text="+", width=7, height=4, font = ('Comic sans MS', 45), fg="#38573F", activebackground="#38573F", activeforeground="#9EAD84", command=go_configuration_page)
 
 
@@ -151,7 +151,7 @@ def profile_access(profile_frame):
   profile_mycreations_list_frame1 = t.Frame(profile_mycreations_list_frame, background='#D1D5C6', borderwidth=3)
   profile_mycreations_list_project1 = t.Label(profile_mycreations_list_frame ,text='Visitez vos oeuvres', background='#3D5B3A', font = ('Corbel', 15, 'bold'), fg='#D1D5C6')
   profile_mycreations_list_view1 = t.Button(profile_mycreations_list_frame, font = ('Corbel', 15, 'bold'), text="Voir l'oeuvre", background='#D1D5C6', relief='groove', command=go_mycreation_page)
-  
+
 
 
   frame = t.Frame(profile_frame, background='#324C40')
@@ -176,14 +176,14 @@ def profile_access(profile_frame):
 
 
   profile_mycreations_list_frame.pack(side='right', expand=True, fill='x')
-  
+
 
   profile_mycreations_list_frame.pack(fill='y', padx=20, pady=10)
   profile_mycreations_list_project1.pack(ipady=20, side='left', fill='both', ipadx=250, padx=20, pady=10)
   profile_mycreations_list_view1.pack(side='left', fill='both', ipadx=250, padx=20, pady=10)
 
   frame.pack(ipady=150)
-  
+
 # --------------- COMMUNITY PAGE --------------- #
 
 def community_access(frame):
@@ -195,13 +195,13 @@ def community_access(frame):
   username.set(liste_oeuvre[index_liste][0])
   nom_oeuvre = liste_oeuvre[index_liste][1]
 
-  def oeuvre_avant(liste, username): 
+  def oeuvre_avant(liste, username):
       nonlocal index_liste, nom_oeuvre
       if index_liste > 0:
         index_liste -= 1
       else:
         index_liste = len(liste)-1
-      
+
       username.set(liste[index_liste][0])
       nom_oeuvre = liste[index_liste][1]
       im = Image.open(f'./Oeuvres/{nom_oeuvre}.png')
@@ -212,7 +212,7 @@ def community_access(frame):
       community_img.image = tkimg
 
 
-  def oeuvre_apres(liste, username): 
+  def oeuvre_apres(liste, username):
       nonlocal index_liste, nom_oeuvre
       if index_liste < len(liste)-1:
         index_liste += 1
@@ -228,8 +228,8 @@ def community_access(frame):
       community_username_label.pack(side='right')
       community_img.create_image(0, 0, anchor=t.NW, image=tkimg)
       community_img.image = tkimg
- 
-      
+
+
 
   # --------- TOP FRAME --------- #
   top_frame = t.Frame(frame, background='#324C40')
@@ -261,7 +261,7 @@ def community_access(frame):
   community_img.create_image(0, 0, anchor = t.NW, image=tkimage)
 
 
-  community_right_frame = t.Frame(community_button_frame, background='#324C40')  
+  community_right_frame = t.Frame(community_button_frame, background='#324C40')
   community_right_button = t.Button(community_right_frame, image=apres_img, font=font, fg="#D1D5C6", activebackground="#D1D5C6", activeforeground="#577D54", bg='#577D54')
 
 
@@ -271,7 +271,7 @@ def community_access(frame):
   community_delete_label = t.Label(delete_username_frame, text='Oeuvre réalisée par :', font=font, bg='#324C40', fg="#D1D5C6")
   community_username_label = t.Label(delete_username_frame, textvariable=username, font=font,bg='#324C40', fg="#D1D5C6")
 
-  
+
 
   # --------- Pack --------- #
   frame.pack(fill='both')
@@ -311,36 +311,39 @@ def community_access(frame):
   delete_username_frame.pack(side='left', expand=True)
   community_delete_label.pack(side='left')
   community_username_label.pack(side='right')
-  
+
 
   community_left_button['command'] = lambda: oeuvre_avant(liste_oeuvre, username)
   community_right_button['command'] = lambda: oeuvre_apres(liste_oeuvre, username)
 # --------------- CONFIGURATION PAGE --------------- #
-
+formes = ["blob","carré", "spirale", "flocon", "sierpinsky", "geo", "cercle","triangle","stalagmite","etoile","icicles"]
+texte_forme = ""
+for el in formes :
+    texte_forme += ", " + el
 def configuration_page(configuration_frame, username):
 
   font = ('Corbel', 30, 'bold')
-  forme_text = "Veuillez entrer le nom de la forme que vous voulez réaliser parmi celles proposées : carré, spirale, flocon, sierpinsky, geo, cercle"
+  forme_text = "Veuillez entrer le nom de la forme que vous voulez réaliser parmi celles proposées : \n" + texte_forme
   place_text = "Veuillez entrer le nom de l'endroit où vous voulez réaliser votre forme parmi celles proposées : HG, H, HD, G, C, D, BG, B, BD"
   surface_text = "Veuillez entrer le nombre de lignes et de colonne pour la figure choisie"
   couleur_text = "Veuillez entrer une couleur"
-  
+
   error_text = t.StringVar(configuration_frame)
   image_path = 'Oeuvres/'
 
   def verify_entry():
-    forme_entry = forme_input.get() 
+    forme_entry = forme_input.get()
     place_entry = place_input.get()
     surface_entry = [surface_input.get(), surface_input1.get()]
     color_entry = couleur_input.get()
     longueur_entry = longueur_input.get()
-    nb_cote_entry = nb_cote_input.get()    
+    nb_cote_entry = nb_cote_input.get()
     if check.get() == 0:
       fill_entry = False
     else:
       fill_entry = True
 
-    if forme_entry in ["carré", "spirale", "flocon", "sierpinsky", "geo", "cercle"] : #Tu me rajoutes les formes possibles ici
+    if forme_entry in formes : #Tu me rajoutes les formes possibles ici
       if place_entry in ["HG", "H", "HD", "G", "C", "D", "BG", "B", "BD"]:
           if surface_entry[0].isdigit() and surface_entry[1].isdigit():
             if longueur_entry.isdigit():
@@ -352,7 +355,7 @@ def configuration_page(configuration_frame, username):
                   position_turtle(place_entry, forme_entry, surface_entry, color_entry, fill_entry, int(longueur_entry), int(nb_cote_entry))
               else:
                 error_text.set("Veuillez indiquer un nombre de côté valide")
-                forme_error.pack()                
+                forme_error.pack()
             else:
               error_text.set("Veuillez indiquer une longueur valide")
               forme_error.pack()
@@ -371,11 +374,11 @@ def configuration_page(configuration_frame, username):
     tu.hideturtle()
 
   def save_turtle():
-    date = (datetime.now()).strftime("%d%b%Y-%H%M%S") 
+    date = (datetime.now()).strftime("%d%b%Y-%H%M%S")
     fileName = 'turtle' + date
     # Capture de toute la fenêtre
     img = ImageGrab.grab(bbox=(995, 225, 1900, 1030))
-    img.save(image_path+ fileName + '.png', format='PNG') 
+    img.save(image_path+ fileName + '.png', format='PNG')
 
     save(username, fileName)
 
@@ -392,7 +395,7 @@ def configuration_page(configuration_frame, username):
         depla(-400, 300)
       elif pos == 'HD':
         depla(400, 300)
-    elif pos in ["BG", "B", "BD"]: 
+    elif pos in ["BG", "B", "BD"]:
       depla(0, -350)
       if pos == 'BG':
         depla(-400, -300)
@@ -405,13 +408,13 @@ def configuration_page(configuration_frame, username):
         depla(350, 0)
       else:
         depla(0, 0)
-    
+
     Surface(t=tu, Coordonnees=(tu.xcor(), tu.ycor()), Cote=longueur, Forme=forme, Ligne=int(surface[0]), Colonne=int(surface[1]), Couleur=couleur, Rempli=rempli, Forme_Spirale=nb_cote_spirale, Taille_Sierpinsky_Geo=nb_cote_spirale)
 
-  
 
-  # --------- Title --------- #   
-  top_frame = t.Frame(configuration_frame, background='#324C40') 
+
+  # --------- Title --------- #
+  top_frame = t.Frame(configuration_frame, background='#324C40')
   configuration_back_frame = t.Frame(top_frame, background='#324C40')
   configuration_back_button = t.Button(configuration_back_frame, background="#577D54", text="<", font = ('Corbel', 25), fg="#D1D5C6", activebackground="#D1D5C6", activeforeground="#577D54", command=go_profile_page, image=back_image, )
 
@@ -446,7 +449,7 @@ def configuration_page(configuration_frame, username):
   couleur_frame = t.Frame(couleur_setting_frame, background='#D1D5C6')
   couleur_label = t.Label(couleur_frame, text=couleur_text, background='#D1D5C6', font = ('Corbel', 13, 'bold'), fg="#324C40", justify='left')
   couleur_input = t.Entry(couleur_frame, font=('Corbel', 15, 'bold'), fg='#D1D5C6', background='#577D54', justify='center')
-  
+
   check_frame = t.Frame(couleur_setting_frame, background='#D1D5C6')
   couleur__check_label = t.Label(check_frame, text="Votre forme est pleine", background='#D1D5C6', font = ('Corbel', 13, 'bold'), fg="#324C40", justify='left')
   check = t.IntVar()
@@ -459,7 +462,7 @@ def configuration_page(configuration_frame, username):
   longueur_input = t.Entry(longueur_frame, font=('Corbel', 15, 'bold'), fg='#D1D5C6', background='#577D54', justify='center')
 
   nb_cote_frame = t.Frame(spec_forme_frame, background='#D1D5C6')
-  nb_cote_label = t.Label(nb_cote_frame, text='Veuillez entrer le nombre de côtés pour votre spirale', background='#D1D5C6', font = ('Corbel', 13, 'bold'), fg="#324C40", justify='left')
+  nb_cote_label = t.Label(nb_cote_frame, text="Nombre de côté pour la spirale/l'étoile", background='#D1D5C6', font = ('Corbel', 13, 'bold'), fg="#324C40", justify='left')
   nb_cote_input = t.Entry(nb_cote_frame, font=('Corbel', 15, 'bold'), fg='#D1D5C6', background='#577D54', justify='center')
 
 
@@ -531,8 +534,8 @@ def configuration_page(configuration_frame, username):
   save_frame.pack(fill='both', ipadx=100, ipady=50)
   save_button.pack(ipadx=26, ipady=10, side='left', expand=True)
   reset_button.pack(ipadx=20, ipady=10, side='right', expand=True)
-  
-  
+
+
   turtle_canvas.pack(side='right', padx=20, fill='x')
 
 
@@ -556,13 +559,13 @@ def mycreation_access(frame, user_name):
     username.set(liste_oeuvre[index_liste][0])
     nom_oeuvre = liste_oeuvre[index_liste][1]
 
-    def oeuvre_avant(liste, username): 
+    def oeuvre_avant(liste, username):
         nonlocal index_liste, nom_oeuvre
         if index_liste > 0:
           index_liste -= 1
         else:
           index_liste = len(liste)-1
-        
+
         username.set(liste[index_liste][0])
         nom_oeuvre = liste[index_liste][1]
         im = Image.open(f'./Oeuvres/{nom_oeuvre}.png')
@@ -573,7 +576,7 @@ def mycreation_access(frame, user_name):
         mycreation_img.image = tkimg
 
 
-    def oeuvre_apres(liste, username): 
+    def oeuvre_apres(liste, username):
         nonlocal index_liste, nom_oeuvre
         if index_liste < len(liste)-1:
           index_liste += 1
@@ -589,11 +592,11 @@ def mycreation_access(frame, user_name):
         mycreation_username_label.pack(side='right')
         mycreation_img.create_image(0, 0, anchor=t.NW, image=tkimg)
         mycreation_img.image = tkimg
-  
-        
+
+
     def delete_image(filename):
       delete_item(filename)
-      nonlocal  liste_oeuvre 
+      nonlocal  liste_oeuvre
       liste_oeuvre = oeuvre_user(user_name)
 
     # --------- TOP FRAME --------- #
@@ -626,7 +629,7 @@ def mycreation_access(frame, user_name):
     mycreation_img.create_image(0, 0, anchor = t.NW, image=tkimage)
 
 
-    mycreation_right_frame = t.Frame(mycreation_button_frame, background='#324C40')  
+    mycreation_right_frame = t.Frame(mycreation_button_frame, background='#324C40')
     mycreation_right_button = t.Button(mycreation_right_frame, image=apres_img, font=font, fg="#D1D5C6", activebackground="#D1D5C6", activeforeground="#577D54", bg='#577D54')
 
 
@@ -636,7 +639,7 @@ def mycreation_access(frame, user_name):
     mycreation_delete_label = t.Label(delete_username_frame, text='Oeuvre réalisée par :', font=font, bg='#324C40', fg="#D1D5C6")
     mycreation_username_label = t.Label(delete_username_frame, textvariable=username, font=font,bg='#324C40', fg="#D1D5C6")
     delete_button = t.Button(mycreation_delete_frame, image=delete_img, bg='#577D54')
-    
+
 
     # --------- Pack --------- #
     frame.pack(fill='both')
@@ -677,7 +680,7 @@ def mycreation_access(frame, user_name):
     mycreation_delete_label.pack(side='left')
     mycreation_username_label.pack(side='right')
     delete_button.pack(side='right', ipadx=5, ipady=5, expand=True)
-    
+
 
     mycreation_left_button['command'] = lambda: oeuvre_avant(liste_oeuvre, username)
     mycreation_right_button['command'] = lambda: oeuvre_apres(liste_oeuvre, username)
@@ -696,7 +699,7 @@ def go_profile_page():
 def go_home_page():
     for p in pages:
         p.pack_forget()
-    
+
     home_access(home_frame)
     home_frame.pack(fill='both', ipady=100)
 
@@ -710,7 +713,7 @@ def go_configuration_page():
   for p in pages:
       p.pack_forget()
   configuration_page(configuration_frame, user_name)
-  
+
 def go_community_page():
   for p in pages:
       p.pack_forget()

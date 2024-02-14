@@ -7,66 +7,33 @@ def initialisation (t, Coordonnees) :
     t.pu()
     t.goto(Coordonnees)
     t.pd()
+    t.speed(0)
 
 def random_couleur_turtle (t) :
     liste = ["red","green","blue","yellow","gray","black","pink","purple"]
     t.color(liste[randint(0,len(liste)-1)])
     t.fillcolor(liste[randint(0,len(liste)-1)])
 
-def carre (t, Cote,Angle=0,Rempli=False) :
-
-
-    if Rempli == True :
-        t.begin_fill()
-    t.left(Angle)
-
-    for i in range(4) :#Carré
-        t.forward(Cote)
+###RECU-----------------------------------------------------
+def blob (t,L) :
+    if L < 5 :
+        t.forward(randint(-2,2))
+        t.circle(3)
+    else :
+        t.forward(randint(-2,2))
+        t.circle(L)
+        t.pu()
         t.left(90)
-
-    if Rempli == True :
-        t.end_fill()
-
-    t.right(Angle)#On remet droit
-
-
+        t.forward(5)
+        t.right(90)
+        t.pd()
+        blob(t,L-5)
 
 def spirale_rec(t, longueur,cote) :
     if longueur > 20 :
         spirale_rec(t, longueur-10,cote)
     t.forward(longueur)
     t.left(360/cote)
-
-
-def koch(t, step,L) :
-    if step == 0 :
-        t.forward(L)
-    else :
-        koch(t, step-1,L//3)
-        t.left(60)
-        koch(t, step-1,L//3)
-        t.right(120)
-        koch(t, step-1,L//3)
-        t.left(60)
-        koch(t, step-1,L//3)
-
-
-def somme_geo(t, n,longueur) :
-    for i in range(4) :
-        t.forward(longueur)
-        t.left(90)
-    t.left(90)
-    t.forward(longueur//2)
-    t.right(90)
-    t.forward(longueur)
-    t.right(180)
-    t.forward(longueur)
-    t.left(90)
-    t.forward(longueur//2)
-    t.left(90)
-    if n > 0 :
-        somme_geo(t, n-1,longueur//2)
-
 
 def flocon (t, Cote,Rempli=False) :
 
@@ -80,6 +47,13 @@ def flocon (t, Cote,Rempli=False) :
     t.right(180)
     t.end_fill()
 
+def icicles (t,Cote) :
+    if Cote > 1 :
+        cercle(t,Cote,True)
+        t.right(90)
+        t.forward(5)
+        t.left(90)
+        icicles(t,Cote-1)
 
 
 def Sierpinsky (t, n,L) :
@@ -112,6 +86,39 @@ def Sierpinsky (t, n,L) :
         t.left(60)
         t.backward(L)
 
+
+def somme_geo(t, n,longueur) :
+    for i in range(4) :
+        t.forward(longueur)
+        t.left(90)
+    t.left(90)
+    t.forward(longueur//2)
+    t.right(90)
+    t.forward(longueur)
+    t.right(180)
+    t.forward(longueur)
+    t.left(90)
+    t.forward(longueur//2)
+    t.left(90)
+    if n > 0 :
+        somme_geo(t, n-1,longueur//2)
+
+def koch(t, step,L) :
+    if step == 0 :
+        t.forward(L)
+    else :
+        koch(t, step-1,L//3)
+        t.left(60)
+        koch(t, step-1,L//3)
+        t.right(120)
+        koch(t, step-1,L//3)
+        t.left(60)
+        koch(t, step-1,L//3)
+
+
+
+
+###FORME BASIQUES------------------------
 def cercle (t, Rayon,Rempli=False) :
     if Rempli == True :
         t.begin_fill()
@@ -122,7 +129,60 @@ def cercle (t, Rayon,Rempli=False) :
         t.end_fill()
 
 
+def carre (t, Cote,Angle=0,Rempli=False) :
+    if Rempli == True :
+        t.begin_fill()
+    t.left(Angle)
 
+    for i in range(4) :#Carré
+        t.forward(Cote)
+        t.left(90)
+
+    if Rempli == True :
+        t.end_fill()
+
+    t.right(Angle)#On remet droit
+
+def triangle (t,L,Rempli=False) :
+    if Rempli == True :
+        t.begin_fill()
+
+    t.left(60)
+    for i in range(3) :
+        t.forward(L)
+        t.right(120)
+    t.right(60)
+    if Rempli == True :
+            t.end_fill()
+
+def stalagmite (t,L,Rempli=False) :
+    if Rempli == True :
+        t.begin_fill()
+
+    angle = randint(60,85)
+    t.left(angle)
+    t.forward(L)
+    t.right(2*angle)
+    t.forward(L)
+    t.left(angle)
+
+    if Rempli == True :
+            t.end_fill()
+
+def etoile (t,L,branche=2,Rempli=False) :
+    if Rempli == True :
+        t.begin_fill()
+
+    angle = 360 / branche
+    t.left(angle)
+    for i in range(branche) :
+        triangle(t,L)
+        t.forward(L)
+        t.right(angle)
+
+
+    if Rempli == True :
+        t.end_fill()
 
 
 def Surface (t, Coordonnees,Cote,Forme,Couleur,Ligne,Colonne,Angle=0,Rempli=False,Forme_Spirale = 0,Taille_Sierpinsky_Geo=0,Ecart_cercle=0) :
@@ -141,33 +201,31 @@ def Surface (t, Coordonnees,Cote,Forme,Couleur,Ligne,Colonne,Angle=0,Rempli=Fals
             if Forme == "carré":
                 carre (t, Cote,Angle,Rempli)
             elif Forme == "spirale" :
+                t.pensize(3)
                 spirale_rec(t, Cote,Forme_Spirale)
+                t.pensize(1)
             elif Forme == "flocon" :
                 flocon (t, Cote,Rempli)
             elif Forme == "sierpinsky" :
-                Sierpinsky(t, Taille_Sierpinsky_Geo,Cote)
+                Sierpinsky(t, 4,Cote)
             elif Forme == "geo" :
-                somme_geo(t, Taille_Sierpinsky_Geo,Cote)
+                somme_geo(t, 6,Cote)
             elif Forme == "cercle" :
                 cercle(t, Cote,Rempli)
+            elif Forme == "triangle" :
+                triangle(t,Cote,Rempli)
+            elif Forme == "stalagmite" :
+                stalagmite(t,Cote,Rempli)
+            elif Forme == "etoile" :
+                etoile(t,Cote,Forme_Spirale,Rempli)
+            elif Forme == "icicles" :
+                icicles(t,Cote)
+            elif Forme == "blob" :
+                t.pensize(3)
+                blob(t,Cote)
+                t.pensize(1)
 
-#carre((0,100),100,"red",20,True)
-#flocon(200,2,"pale turquoise")
-#somme_geo(10,250)
-#koch(3,500)
-#Sierpinsky(4,200)
-#spirale_rec(300,3)
 
-#Surface(turtle, (-500,0),100,"spirale","rainbow",5,8,45,True,5,3,100)
-"""On va voir ##################
-def Stalagmite (Taille,Rond=False) :
-    #On met une valeur mediane pour les angles des stalagmites : randint(60,120)
-    angle = randint(60,90)
-    t.left(angle)
-    t.forward(Taille)
-    t.right(90)
-    t.forward(Taille)
-"""
-#Stalagmite(100,False)
 
+#Surface(turtle, (0,0),50,"blob","red",1,1,45,True,5,)
 #turtle.exitonclick()
